@@ -17,7 +17,7 @@
 // ((()))
 const isValid = function(s){ 
     let aux = -1;
-    let respuesta = 'YES';
+    let respuesta = true;
     while (s.length !=0) {     
         aux = s.length;
         s = s.replace("()","");
@@ -25,12 +25,50 @@ const isValid = function(s){
         s = s.replace("{}","");
         // puede reemplazar algo?
         if(aux === s.length){ 
-            respuesta = 'NO';
+            respuesta = false;
             break;
         }
     }
     return respuesta;
 };
+
+const isValid2 = function(s) {
+
+    let aux = -1;
+    let respuesta = true;
+    let pila = new Array();
+    for (let i = 0; i < s.length; i++) {
+
+        let c = s[i];
+
+        if (c == '(' || c == '[' || c == '{') {
+            pila.push(c);
+            continue;
+        }
+
+        let ultimo;
+        switch (c) {
+            case ')':
+                ultimo = pila.pop();
+                if (ultimo != '(')
+                    return false;
+                break;
+            case ']':
+                ultimo = pila.pop();
+                if (ultimo != '[')
+                    return false;
+                break;
+            case '}':
+                ultimo = pila.pop();
+                if (ultimo != '{')
+                    return false;
+                break;
+        }
+    };
+
+    return pila.length == 0;
+
+}
 
 // TESTS
 console.log(isValid('()') === true);
@@ -39,5 +77,12 @@ console.log(isValid('()[]{}')=== true);
 console.log(isValid('(}') === false);
 console.log(isValid('([)]') === false);
 console.log(isValid('{}{}(){[()]}') === true);
+
+console.log(isValid2('()') === true);
+console.log(isValid2('([{}])') === true);
+console.log(isValid2('()[]{}')=== true);
+console.log(isValid2('(}') === false);
+console.log(isValid2('([)]') === false);
+console.log(isValid2('{}{}(){[()]}') === true);
 
 // VOLVEMOS 9:36
